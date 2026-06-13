@@ -5,10 +5,13 @@ description = "Secure facial recognition authentication for Linux. Windows Hello
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
-    "click>=8.4.1",
-    "cryptography>=48.0.1",
-    "numpy>=2.4.6",
-    "onnxruntime>=1.26.0",
-    "opencv-python-headless>=4.13.0.92",
-    "toml>=0.10.2",
+  "click>=8.4.1",
+  "cryptography>=48.0.1",
+  "numpy>=2.4.6",
+  "onnxruntime>=1.26.0",
+  "opencv-python-headless>=4.13.0.92",
+  "toml>=0.10.2",
 ]
+
+[tool.ruff]
+line-length = 150
