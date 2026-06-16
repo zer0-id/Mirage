@@ -17,7 +17,7 @@ class FaceDetector:
             return None
         return faces[0]
 
-    def crop_face(self, frame, face):
+    def crop_face(self, frame, face, size=(112, 112)):
         x, y, w, h = map(int, face[:4])
         crop = frame[y : y + h, x : x + w]
-        return cv2.resize(crop, (112, 112))
+        return cv2.resize(crop, size)
