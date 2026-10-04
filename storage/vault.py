@@ -13,7 +13,7 @@ from storage.context import FORMAT_VER
 
 DEFAULT_VAULT_DIR = Path("/var/lib/mirage")
 TPM_DEVICE = Path("/dev/tpmrm0")
-EMBEDDING_DIM = 512  # ArcFace w600k_r50
+EMBEDDING_DIM = 512
 EMBEDDING_BYTES = EMBEDDING_DIM * 4
 
 
