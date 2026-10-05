@@ -3,9 +3,9 @@ import hmac
 import os
 from tpm2_pytss import ESAPI, TPM2B_PRIVATE, TPM2B_PUBLIC, TSS2_Exception
 from tpm2_pytss.constants import ESYS_TR, TPM2_ALG, TPM2_RC, TSS2_RC
-from errors import VaultFormatError, VaultIntegrityError
-from storage.context import build_context
-from storage.tpmutil import primary
+from mirage.errors import VaultFormatError, VaultIntegrityError
+from mirage.storage.context import build_context
+from mirage.storage.tpmutil import primary
 from . import MODE_CFB
 from .base import Backend, Entry, get_bytes, b64e, get_len
 

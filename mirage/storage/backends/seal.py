@@ -3,9 +3,9 @@ from cryptography.exceptions import InvalidTag
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from tpm2_pytss import ESAPI, TPM2B_PRIVATE, TPM2B_PUBLIC, TPM2B_SENSITIVE_CREATE, TPMS_SENSITIVE_CREATE
 from tpm2_pytss.constants import TPMA_OBJECT
-from errors import VaultFormatError, VaultIntegrityError
-from storage.context import build_context
-from storage.tpmutil import primary
+from mirage.errors import VaultFormatError, VaultIntegrityError
+from mirage.storage.context import build_context
+from mirage.storage.tpmutil import primary
 from . import MODE_SEAL
 from .base import Backend, Entry, b64e, get_bytes, get_len
 

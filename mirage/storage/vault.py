@@ -6,9 +6,9 @@ import tempfile
 from pathlib import Path
 import os
 import numpy as np
-from errors import VaultFormatError
-from storage.backends import ALL_MODES, get_backend, MODE_SEAL
-from storage.context import FORMAT_VER
+from mirage.errors import VaultFormatError
+from mirage.storage.backends import ALL_MODES, get_backend, MODE_SEAL
+from mirage.storage.context import FORMAT_VER
 
 
 DEFAULT_VAULT_DIR = Path("/var/lib/mirage")

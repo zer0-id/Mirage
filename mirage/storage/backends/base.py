@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from errors import VaultFormatError
+from mirage.errors import VaultFormatError
 import base64
 
 Entry = dict[str, str | int]

@@ -5,8 +5,8 @@ import tomllib
 from typing import get_args
 from dataclasses import asdict, dataclass, field, fields
 from pathlib import Path, PurePosixPath
-from errors import ConfigError
-from storage.backends import ALL_MODES
+from mirage.errors import ConfigError
+from mirage.storage.backends import ALL_MODES
 
 CONFIG_PATH = Path("/etc/mirage/config.toml")
 RECOMMENDED_MAX_DISTANCE = 0.60

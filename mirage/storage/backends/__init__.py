@@ -22,7 +22,7 @@ Rules:
 MODE_CFB = "tpm-cfb"
 MODE_SEAL = "tpm-seal"
 
-from errors import VaultFormatError
+from mirage.errors import VaultFormatError
 
 from .base import Backend, Entry
 
