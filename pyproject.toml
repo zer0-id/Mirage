@@ -17,7 +17,6 @@ dependencies = [
   "onnxruntime>=1.26.0",
   "opencv-python-headless>=4.13.0.92",
   "rich>=15.0.0",
-  "toml>=0.10.2",
   "tomlkit>=0.15.1",
   "tpm2-pytss>=3.0.0",
 ]
