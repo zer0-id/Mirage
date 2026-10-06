@@ -1,17 +1,37 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [project]
 name = "mirage"
 version = "0.1.0"
 description = "Secure facial recognition authentication for Linux. Windows Hello™ inspired, PAM-integrated, NPU-accelerated"
 readme = "README.md"
 requires-python = ">=3.14"
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE"]
 dependencies = [
   "click>=8.4.1",
   "cryptography>=48.0.1",
   "numpy>=2.4.6",
   "onnxruntime>=1.26.0",
   "opencv-python-headless>=4.13.0.92",
-  "toml>=0.10.2",
+  "rich>=15.0.0",
+  "tomlkit>=0.15.1",
+  "tpm2-pytss>=3.0.0",
 ]
 
 [tool.ruff]
 line-length = 150
+
+[dependency-groups]
+dev = ["pytest>=9.1.1"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["mirage"]
+
+[tool.pyright]
+include = ["mirage"]
+pythonVersion = "3.14"
+venvPath = "."
+venv = ".venv"

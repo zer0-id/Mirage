@@ -10,7 +10,6 @@ class LivenessDetector:
         self.input_name = self.session.get_inputs()[0].name
 
     def preprocess(self, face_img):
-        img = face_img.astype(np.float32)
         img = cv2.cvtColor(face_img, cv2.COLOR_BGR2RGB).astype(np.float32)
         img -= [104.0, 117.0, 123.0]
         img = np.transpose(img, (2, 0, 1))

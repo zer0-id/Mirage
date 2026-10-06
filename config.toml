@@ -1,0 +1,72 @@
+# Mirage configuration
+#
+# Install location: /etc/mirage/config.toml (owner root, mode 0644).
+# Mirage refuses a config that is not owned by root or that is writable by group
+# or others. It also rejects unknown keys, so a typo fails.
+#
+# Every key is optional. A key you leave out uses the default shown here, so you
+# only need to set what you want to change. The file is read fresh on every
+# authentication.
+#
+# Impossible values (a negative threshold, a zero timeout) are errors. Legal values
+# that weaken security are accepted and logged as a warning on every
+# authentication. You are trusted to know the consequences.
+
+[storage]
+# Where the encrypted vault lives. Must be an absolute path. Root-only (mode 0700).
+# Changing it does not move existing data.
+vault_dir = "/var/lib/mirage"
+
+# How NEW enrollments are encrypted. `mirage init` benchmarks your TPM and sets this.
+#   "tpm-seal"  AES-GCM, with the key sealed to this TPM. Works on any TPM 2.0.
+#   "tpm-cfb"   AES inside the TPM itself. Only chips that implement EncryptDecrypt.
+# Existing enrollments keep the mode they were made with.
+# For example : enroll_mode = "tpm-seal"
+
+[match]
+# Cosine distance between the live face and the enrolled one. LOWER IS STRICTER.
+# 0 means identical and 2 is the maximum possible. Raising this accepts more
+# look-alikes and photos. Lowering it rejects more of the real you.
+# Values above 0.6 log a warning.
+max_distance = 0.40
+
+# Consecutive frames that must each match. Requiring several in a row stops a
+# single lucky frame from unlocking. A value of 1 logs a warning.
+frames_required = 3
+
+# Seconds to keep trying before giving up and falling back to the password.
+timeout_s = 4.0
+
+[enroll]
+# Pictures captured during enrollment. They are embedded and averaged into one
+# stored template, so more frames means a steadier template but a longer enrollment.
+frames = 5
+
+[liveness]
+# Run the anti-spoofing check. Turning it off lets a printed photo or a screen
+# through, and logs a warning on every authentication.
+require = true
+
+# Reject a face whose eyes are closed. 
+# Reserved, takes effect once the eyes-open check ships.
+require_eyes_open = true
+
+[camera]
+# true uses the IR camera (ir_device), false uses a normal webcam (rgb_device).
+# A plain webcam is much easier to fool with a photo, so keep liveness on if you
+# set this to false (turning it off while using RGB logs a warning).
+ir = true
+
+# Prefer a stable path: /dev/videoN numbers can change between boots.
+# List yours with `ls -l /dev/v4l/by-id/` or `v4l2-ctl --list-devices`.
+# Must be a path under /dev/.
+ir_device = "/dev/video2"
+rgb_device = "/dev/video0"
+
+[limits]
+# Failed face attempts in a row before face unlock is disabled for a while.
+# The password keeps working. Enforced once the PAM module ships.
+max_failures = 5
+
+# Seconds face unlock stays disabled after hitting max_failures.
+lockout_s = 300
