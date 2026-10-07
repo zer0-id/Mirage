@@ -51,11 +51,19 @@ require = true
 # Reserved, takes effect once the eyes-open check ships.
 require_eyes_open = true
 
+# Minimum "live" score from the anti-spoofing model, between 0 and 1.
+# HIGHER IS STRICTER. Below 0.5 logs a warning.
+threshold = 0.60
+
 [camera]
 # true uses the IR camera (ir_device), false uses a normal webcam (rgb_device).
 # A plain webcam is much easier to fool with a photo, so keep liveness on if you
 # set this to false (turning it off while using RGB logs a warning).
 ir = true
+
+# Minimum confidence (0 to 1) for the detector to accept something as a face.
+# HIGHER is stricter: fewer false detections
+min_face_score = 0.80
 
 # Prefer a stable path: /dev/videoN numbers can change between boots.
 # List yours with `ls -l /dev/v4l/by-id/` or `v4l2-ctl --list-devices`.

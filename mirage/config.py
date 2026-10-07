@@ -2,8 +2,9 @@ import os
 import stat
 import tempfile
 import tomllib
+from math import isfinite
 from typing import get_args
-from dataclasses import asdict, dataclass, field, fields
+from dataclasses import dataclass, field, fields
 from pathlib import Path, PurePosixPath
 from mirage.errors import ConfigError
 from mirage.storage.backends import ALL_MODES
@@ -55,7 +56,7 @@ class MatchConfig(_Section):
     def validate(self) -> None:
         _require(0 < self.max_distance <= 2, "match.max_distance must be in (0, 2]")
         _require(self.frames_required >= 1, "match.frames_required must be at least 1")
-        _require(0 < self.timeout_s and math.isfinite(self.timeout_s), "match.timeout_s must be positive and finite")
+        _require(0 < self.timeout_s and isfinite(self.timeout_s), "match.timeout_s must be positive and finite")
 
     def warnings(self) -> list[str]:
         out: list[str] = []
@@ -85,10 +86,16 @@ class EnrollConfig(_Section):
 class LivenessConfig(_Section):
     require: bool = True
     require_eyes_open: bool = True
+    threshold: float = 0.60
+
+    def validate(self) -> None:
+        _require(0 < self.threshold < 1, "liveness.threshold must be in (0, 1)")
 
     def warnings(self) -> list[str]:
         if not self.require:
             return ["liveness.require is off: a printed photo or a screen can unlock"]
+        if self.threshold < 0.50:
+            return ["liveness.threshold is below 0.50: anti-spoofing may be ineffective"]
         return []
 
 
@@ -97,6 +104,7 @@ class CameraConfig(_Section):
     ir: bool = True
     ir_device: str = "/dev/video2"
     rgb_device: str = "/dev/video0"
+    min_face_score: float = 0.8
 
     @property
     def device(self) -> str:
@@ -104,6 +112,7 @@ class CameraConfig(_Section):
         return self.ir_device if self.ir else self.rgb_device
 
     def validate(self) -> None:
+        _require(0 < self.min_face_score <= 1, "camera.min_face_score must be in (0, 1]")
         for name in ("ir_device", "rgb_device"):
             value = getattr(self, name)
             _require(_clean_abs(value) and value.startswith("/dev/"), f"camera.{name} must be a clean path under /dev/")
@@ -218,7 +227,6 @@ def _read_trusted(path: Path, trusted_uid: int) -> bytes:
 
 
 def load_config(path: Path = CONFIG_PATH, trusted_uid: int = 0) -> Config:
-    """Load the config, failing closed. A missing file means the built-in defaults."""
     blob = _read_trusted(path, trusted_uid)
     try:
         data = tomllib.loads(blob.decode("utf-8"))
